@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<constant name="struts.devMode" value="true" />
+	<package name="default" namespace="/" extends="struts-default">
+		<action name="AddFacilitator" class="com.cgi.easyshare.client.AddFacilitator">
+			<result name="ADDED">/Response.jsp</result>
+		<result name="ERROR">/Response.jsp</result>
+		</action>
+		
+		<action name="GetAllSessions" class="com.cgi.easyshare.client.GetAllSessions">
+			<result name="ADDED">/Response.jsp</result>
+		<result name="ERROR">/Response.jsp</result>
+		</action>
+	</package>
+</struts>
