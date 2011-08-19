@@ -8,7 +8,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-<s:form action="GetAllSessions.action">
+<s:form action="AddFacilitator.action">
 	<s:textfield name="sessionId" label="Session Id:"/>
 	<s:textfield name="email" label="Facilitator Email:"/>
 	<s:submit/>

@@ -22,15 +22,15 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import com.cgi.easyshare.response.ParsedResponse;
+import com.cgi.easyshare.utilities.ParseResponse;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class AddFacilitator extends ActionSupport{
 
 	private String sessionId;
 	private String email;
-	private String service;
-	private String message;
-	private String code;
+	private ParsedResponse parsedResp;
 	public String getSessionId() {
 		return sessionId;
 	}
@@ -47,42 +47,25 @@ public class AddFacilitator extends ActionSupport{
 		this.email = email;
 	}
 
-	public String getService() {
-		return service;
+	public ParsedResponse getParsedResp() {
+		return parsedResp;
 	}
 
-	public void setService(String service) {
-		this.service = service;
-	}
-	
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
-	}
-	
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
+	public void setParsedResp(ParsedResponse parsedResp) {
+		this.parsedResp = parsedResp;
 	}
 
 	public String execute(){
         StringBuilder completeResponse = new StringBuilder();
         
 		try {
-				URL url = new URL("http://localhost:8080/EasyShare/addFacilitator?sessionId="+sessionId+"&email="+email);
-			
+				URL url = new URL("http://localhost:8081/EasyShare/addFacilitator?sessionId="+sessionId+"&email="+email);
 				URLConnection conn = url.openConnection();
+				ParseResponse pr=new ParseResponse();
+				parsedResp=new ParsedResponse();
 				conn.setDoOutput(true);
-				 BufferedWriter out = 
-				        new BufferedWriter( new OutputStreamWriter( conn.getOutputStream() ) );			
-				 out.flush();
-				 out.close();			
+				conn.setRequestProperty("Cookie", "es=surabhi");
+				conn.connect();			
 				 BufferedReader in = 
 		                new BufferedReader( new InputStreamReader( conn.getInputStream() ) );
 		            
@@ -92,107 +75,23 @@ public class AddFacilitator extends ActionSupport{
 		                completeResponse.append(res);
 		            }
 		            in.close();	
-		            parseXmlStream(completeResponse.toString());
+		            pr.parseXmlStream(completeResponse.toString(),parsedResp);
 		            return "ADDED";    
 		}catch(MalformedURLException e) {
 			// TODO Auto-generated catch block
 			System.out.println("MalformedURLException");
 			e.printStackTrace();
-			message="ERROR";
+			parsedResp.setMessage("ERROR");
 			return "ERROR";
 		}			
 		catch(IOException e) {
 				// TODO Auto-generated catch block
 			System.out.println("IOException");
 				e.printStackTrace();
-				message="ERROR";
+				parsedResp.setMessage("ERROR");
 				return "ERROR";
 		}
 		 
 	}
 	
-	
-
-	private void parseXmlStream(String response){
-		//get the factory
-		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-		List<String>responseList=null;
-		try {
-
-			//Using factory get an instance of document builder
-			DocumentBuilder db = dbf.newDocumentBuilder();
-
-			//parse using builder to get DOM representation of the XML file
-			InputSource is = new InputSource(new StringReader(response));
-			 Document dom= db.parse(is);
-			 parseDocument(dom);
-			
-
-		}catch(ParserConfigurationException pce) {
-			pce.printStackTrace();
-		}catch(SAXException se) {
-			se.printStackTrace();
-		}catch(IOException ioe) {
-			ioe.printStackTrace();
-		}
-		
-	}
-
-
-private void parseDocument(Document dom){
-	//get the root element
-	Element docEle = dom.getDocumentElement();
-	List<String>responseList=new ArrayList<String>();
-	//get a nodelist of elements
-	NodeList serviceNode = docEle.getElementsByTagName("service");
-	Element serviceElement=null;
-	if(serviceNode!=null){
-		serviceElement=(Element)serviceNode.item(0);
-	}
-	service=getElementAttribute(serviceElement,"service");
-	
-	NodeList messageNode = docEle.getElementsByTagName("message");
-	Element messageElement=null;
-	if(messageNode!=null){
-		messageElement=(Element)messageNode.item(0);
-	}
-	message=messageElement.getNodeValue();
-	System.out.println(service+"   "+message);
-	
-	NodeList codeNode = docEle.getElementsByTagName("code");
-	Element codeElement=null;
-	if(codeNode!=null){
-		codeElement=(Element)codeNode.item(0);
-	}
-	code=codeElement.getNodeValue();
-	/*
-	if(nl != null && nl.getLength() > 0) {
-		for(int i = 0 ; i < nl.getLength();i++) {
-
-			//get the employee element
-			Element el = (Element)nl.item(i);
-
-			//get the Employee object
-			responseList.add(getElement(el));			
-		}
-	}*/
-	
-}
-
-private String getElementAttribute(Element el,String attribute){
-	String bookName = getTextValue(el,attribute);
-	return bookName;
-	
-}
-
-private String getTextValue(Element ele, String tagName) {
-	String textVal = null;
-	NodeList nl = ele.getElementsByTagName(tagName);
-	if(nl != null && nl.getLength() > 0) {
-		Element el = (Element)nl.item(0);
-		textVal = el.getFirstChild().getNodeValue();
-	}
-
-	return textVal;
-}
 }

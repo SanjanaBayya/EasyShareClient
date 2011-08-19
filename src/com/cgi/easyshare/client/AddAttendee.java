@@ -22,12 +22,14 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import com.cgi.easyshare.response.ParsedResponse;
+
 public class AddAttendee {
 	private String service;
 	private String message;
 	private String code;
 	private String data;
-	
+	private ParsedResponse parsedResp;
 	private String sessionId;
 	private String email;
 	public String getMessage() {
@@ -81,12 +83,20 @@ public class AddAttendee {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	
+	public ParsedResponse getParsedResp() {
+		return parsedResp;
+	}
+
+	public void setParsedResp(ParsedResponse parsedResp) {
+		this.parsedResp = parsedResp;
+	}
 
 	public String execute(){
         StringBuilder completeResponse = new StringBuilder();
         
 		try {
-				URL url = new URL("http://localhost:8080/EasyShare/addAttendee?sessionId="+sessionId+"&email="+email);
+				URL url = new URL("http://localhost:8081/EasyShare/addAttendee?sessionId="+sessionId+"&email="+email);
 			
 				URLConnection conn = url.openConnection();
 				conn.setDoOutput(true);

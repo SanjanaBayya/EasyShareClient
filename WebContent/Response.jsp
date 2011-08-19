@@ -8,8 +8,9 @@
 <title>Insert title here</title>
 </head>
 <body>
-<s:property value="service"/>action is a <s:property value="message"/>!!
+<s:property value="parsedResp.getService()"/>action is a <s:property value="parsedResp.getCode()"/>!!
 <br/>
-<s:property value="data"/>
+<s:property value="parsedResp.getMessage()"/>
+<s:property value="parsedResp.getData()"/>
 </body>
 </html>

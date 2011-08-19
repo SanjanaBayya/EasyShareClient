@@ -19,9 +19,9 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+
+import com.cgi.easyshare.response.ParsedResponse;
 import com.cgi.easyshare.utilities.ParseResponse;
-
-
 public class ParseMain {
 	private static String service;
 	private static String message;
@@ -52,6 +52,7 @@ public class ParseMain {
 	}
 	public static void main(String[] args) {
 		ParseResponse pr=new ParseResponse();
+		ParsedResponse parsedResp=new ParsedResponse();
 		 StringBuilder completeResponse = new StringBuilder();
 	        
 			try {
@@ -85,8 +86,8 @@ public class ParseMain {
 			                completeResponse.append(res);
 			            }
 			            in.close();	
-			            data=pr.parseXmlStream(completeResponse.toString(),service,message);
-			            System.out.println(data);
+			            pr.parseXmlStream(completeResponse.toString(),parsedResp);
+			            System.out.println(parsedResp.getData());
 			                
 			}catch(MalformedURLException e) {
 				// TODO Auto-generated catch block

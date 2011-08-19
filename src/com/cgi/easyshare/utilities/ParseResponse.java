@@ -15,9 +15,11 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import com.cgi.easyshare.response.ParsedResponse;
+
 public class ParseResponse {
 	
-	public String parseXmlStream(String response,String service,String message){
+	public void parseXmlStream(String response,ParsedResponse parsedResp){
 		//get the factory
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		List<String>responseList=null;
@@ -30,7 +32,7 @@ public class ParseResponse {
 			//parse using builder to get DOM representation of the XML file
 			InputSource is = new InputSource(new StringReader(response));
 			 Document dom= db.parse(is);
-			 data=parseDocument(dom,service,message);
+			 parseDocument(dom,parsedResp);
 			 
 
 		}catch(ParserConfigurationException pce) {
@@ -40,10 +42,9 @@ public class ParseResponse {
 		}catch(IOException ioe) {
 			ioe.printStackTrace();
 		}
-		return data;
 	}
 	
-	private String parseDocument(Document dom,String service,String message){
+	private void parseDocument(Document dom,ParsedResponse parsedResp){
 		//get the root element
 		Element docEle = dom.getDocumentElement();
 		String data=null;
@@ -53,32 +54,38 @@ public class ParseResponse {
 		if(serviceNode!=null){
 			serviceElement=(Element)serviceNode.item(0);
 		}
-		service=getSubElementValue(serviceElement,"service");
+		parsedResp.setService(getSubElementValue(serviceElement,"service"));
 		
 		NodeList messageNode = docEle.getElementsByTagName("message");
 		Element messageElement=null;
 		if(messageNode!=null){
 			messageElement=(Element)messageNode.item(0);
 		}
-		message=messageElement.getFirstChild().getNodeValue();
-		System.out.println(service+"   "+message);
+		parsedResp.setMessage(messageElement.getFirstChild().getNodeValue());
+		
+		NodeList codeNode = docEle.getElementsByTagName("code");
+		Element codeElement=null;
+		if(codeNode!=null){
+			codeElement=(Element)codeNode.item(0);
+		}
+		parsedResp.setCode(codeElement.getFirstChild().getNodeValue());
+		//System.out.println(service+"   "+message);
 		NodeList dataNode=docEle.getElementsByTagName("data");
-		if("SUCCESS".equals(message)){
+		if("SUCCESS".equals(parsedResp.getMessage())){
 			Element dataElement=null;
 			if(dataNode!=null){
 				dataElement=(Element)dataNode.item(0);
 			}
-			if("GetAllSessions".equals(service) || "GetMySessions".equals(service))
-				data=loadSessions(dataElement);
-			else if("GetUsers".equals(service) || "GetUser".equals(service))
-				data=loadUsers(dataElement);
+			if("GetAllSessions".equals(parsedResp.getService()) || "GetMySessions".equals(parsedResp.getService()))
+				parsedResp.setData(loadSessions(dataElement));
+			else if("GetUsers".equals(parsedResp.getService()) || "GetUser".equals(parsedResp.getService()))
+				parsedResp.setData(loadUsers(dataElement));
 			else 
-				data=loadResult(dataElement);
+				parsedResp.setData(loadResult(dataElement));
 			
 		}
-		
-		return data;
 	}
+	
 	public String loadSessions(Element dataElement){
 		List<String>responseList=new ArrayList<String>();
 		NodeList sessionList=dataElement.getElementsByTagName("com.cgi.open.easyshare.model.Session");
