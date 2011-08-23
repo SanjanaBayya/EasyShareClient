@@ -7,7 +7,12 @@ import java.io.StringReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.DateFormat;
+import java.text.FieldPosition;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -50,7 +55,7 @@ public class ParseMain {
 	public void setData(String data) {
 		this.data = data;
 	}
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		ParseResponse pr=new ParseResponse();
 		ParsedResponse parsedResp=new ParsedResponse();
 		 StringBuilder completeResponse = new StringBuilder();
@@ -102,6 +107,19 @@ public class ParseMain {
 					
 			}
 
+	}*/
+	
+	public static void main(String[] args) {
+		
+			StringBuffer timeBuff=new StringBuffer();
+			Calendar cal=Calendar.getInstance();
+			Date today=cal.getTime();
+			DateFormat df=DateFormat.getDateInstance(DateFormat.SHORT);
+			System.out.println(df.format(today));
+			df=new SimpleDateFormat("HH:mm a");			
+			System.out.println(df.format(today));
+			
+		
 	}
 	
 }

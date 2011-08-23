@@ -78,6 +78,8 @@ public class RemoveFacilitator {
 		            }
 		            in.close();	
 		            pr.parseXmlStream(completeResponse.toString(),parsedResp);
+		            if("FAILURE".equals(parsedResp.getCode()))
+		            	return "ERROR";
 		            return "ADDED";    
 		}catch(MalformedURLException e) {
 			// TODO Auto-generated catch block

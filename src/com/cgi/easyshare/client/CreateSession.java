@@ -76,7 +76,9 @@ public class CreateSession {
 		            }
 		            in.close();	
 		            pr.parseXmlStream(completeResponse.toString(),parsedResp);
-		            return "ADDED";    
+		            if("FAILURE".equals(parsedResp.getCode()))
+		            	return "ERROR";
+		            return "CREATED";    
 		}catch(MalformedURLException e) {
 			// TODO Auto-generated catch block
 			System.out.println("MalformedURLException");

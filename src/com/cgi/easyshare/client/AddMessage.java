@@ -10,7 +10,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.text.*;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -21,7 +24,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-
 import com.cgi.easyshare.response.ParsedResponse;
 import com.cgi.easyshare.utilities.ParseResponse;
 
@@ -33,7 +35,7 @@ public class AddMessage {
 	private String text;
 	private String date;
 	private String postTime;
-	private String postBy;
+	private String postedBy;
 	
 	public String getSessionId() {
 		return sessionId;
@@ -69,20 +71,20 @@ public class AddMessage {
 		this.text = text;
 	}
 
-	public String getPost_time() {
+	public String getPostTime() {
 		return postTime;
 	}
 
-	public void setPost_time(String postTime) {
-		postTime = postTime;
+	public void setPostTime(String postTime) {
+		this.postTime = postTime;
 	}
 
 	public String getPostBy() {
-		return postBy;
+		return postedBy;
 	}
 
-	public void setPost_by(String postBy) {
-		postBy = postBy;
+	public void setPostBy(String postedBy) {
+		this.postedBy = postedBy;
 	}
 	
 	public ParsedResponse getParsedResp() {
@@ -97,7 +99,8 @@ public class AddMessage {
         StringBuilder completeResponse = new StringBuilder();
         
 		try {
-				URL url = new URL("http://localhost:8081/EasyShare/addMessage?sessionId="+sessionId+"&subject="+subject+"&text="+text+"&date="+date+"&postTime="+postTime+"&postBy="+postBy);
+				populatePostDetails();
+				URL url = new URL("http://localhost:8081/EasyShare/addMessage?sessionId=1&subject="+subject+"&text="+text+"&date="+date+"&postTime="+postTime+"&postedBy=srimathi@cgi.com");
 				URLConnection conn = url.openConnection();
 				ParseResponse pr=new ParseResponse();
 				parsedResp=new ParsedResponse();
@@ -114,6 +117,8 @@ public class AddMessage {
 		            }
 		            in.close();	
 		            pr.parseXmlStream(completeResponse.toString(),parsedResp);
+		            if("FAILURE".equals(parsedResp.getCode()))
+		            	return "ERROR";
 		            return "ADDED";    
 		}catch(MalformedURLException e) {
 			// TODO Auto-generated catch block
@@ -130,6 +135,17 @@ public class AddMessage {
 				return "ERROR";
 		}
 		 
+	}
+	
+	private void populatePostDetails(){
+		StringBuffer timeBuff=new StringBuffer();
+		Calendar cal=Calendar.getInstance();
+		Date today=cal.getTime();
+		DateFormat df=DateFormat.getDateInstance(DateFormat.SHORT);
+		setDate(df.format(today));
+		df=new SimpleDateFormat("HH:mm");	
+		System.out.println(df.format(today));
+		setPostTime(df.format(today));		
 	}
 	
 }

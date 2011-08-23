@@ -6,13 +6,33 @@
 	<constant name="struts.devMode" value="true" />
 	<package name="default" namespace="/" extends="struts-default">
 		<action name="AddFacilitator" class="com.cgi.easyshare.client.AddFacilitator">
-			<result name="ADDED">/Response.jsp</result>
-		<result name="ERROR">/Response.jsp</result>
+			<result name="ADDED">/Success.jsp</result>
+			<result name="ERROR">/Error.jsp</result>
+		</action>
+		
+		<action name="AddAttendee" class="com.cgi.easyshare.client.AddAttendee">
+			<result name="ADDED">/Success.jsp</result>
+			<result name="ERROR">/Error.jsp</result>
+		</action>
+		
+		<action name="AddMessage" class="com.cgi.easyshare.client.AddMessage">
+			<result name="ADDED">/Success.jsp</result>
+			<result name="ERROR">/Error.jsp</result>
+		</action>
+		
+		<action name="CreateSession" class="com.cgi.easyshare.client.CreateSession">
+			<result name="CREATED">/Success.jsp</result>
+			<result name="ERROR">/Error.jsp</result>
 		</action>
 		
 		<action name="GetAllSessions" class="com.cgi.easyshare.client.GetAllSessions">
-			<result name="ADDED">/Response.jsp</result>
-		<result name="ERROR">/Response.jsp</result>
+			<result name="ADDED">/Success.jsp</result>
+			<result name="ERROR">/Error.jsp</result>
+		</action>
+		
+		<action name="DesignateUser" class="com.cgi.easyshare.client.DesignateUser">
+			<result name="DESIGNATED">/Success.jsp</result>
+			<result name="ERROR">/Error.jsp</result>
 		</action>
 	</package>
 </struts>

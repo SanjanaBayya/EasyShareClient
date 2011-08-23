@@ -8,9 +8,10 @@
 <title>Insert title here</title>
 </head>
 <body>
-<s:property value="parsedResp.getService()"/>action is a <s:property value="parsedResp.getCode()"/>!!
-<br/>
-<s:property value="parsedResp.getMessage()"/>
-<s:property value="parsedResp.getData()"/>
+<s:form action="CreateSession.action">
+	<s:textfield name="sessionName" label="Session Name:"/>
+	<s:textfield name="description" label="Description:"/>
+	<s:submit/>
+</s:form>
 </body>
 </html>

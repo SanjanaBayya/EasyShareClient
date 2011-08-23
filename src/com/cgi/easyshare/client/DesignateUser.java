@@ -77,7 +77,9 @@ public class DesignateUser {
 		            }
 		            in.close();	
 		            pr.parseXmlStream(completeResponse.toString(),parsedResp);
-		            return "ADDED";    
+		            if("FAILURE".equals(parsedResp.getCode()))
+		            	return "ERROR";
+		            return "DESIGNATED";    
 		}catch(MalformedURLException e) {
 			// TODO Auto-generated catch block
 			System.out.println("MalformedURLException");
