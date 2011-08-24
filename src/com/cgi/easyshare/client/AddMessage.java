@@ -100,7 +100,7 @@ public class AddMessage {
         
 		try {
 				populatePostDetails();
-				URL url = new URL("http://localhost:8081/EasyShare/addMessage?sessionId=1&subject="+subject+"&text="+text+"&date="+date+"&postTime="+postTime+"&postedBy=srimathi@cgi.com");
+				URL url = new URL("http://localhost:8081/EasyShare/addMessage?sessionId=1&subject="+subject+"&text="+text+"&date="+date+"&postTime="+postTime);
 				URLConnection conn = url.openConnection();
 				ParseResponse pr=new ParseResponse();
 				parsedResp=new ParsedResponse();
