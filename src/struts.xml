@@ -34,5 +34,11 @@
 			<result name="DESIGNATED">/Success.jsp</result>
 			<result name="ERROR">/Error.jsp</result>
 		</action>
+		
+		<action name="UploadResource" class="com.cgi.easyshare.client.UploadResource" >
+			<result name="ADDED">/Success.jsp</result>
+			<result name="ERROR">/Error.jsp</result>
+			<result name="input">/UploadResource.jsp</result>
+		</action>
 	</package>
 </struts>
